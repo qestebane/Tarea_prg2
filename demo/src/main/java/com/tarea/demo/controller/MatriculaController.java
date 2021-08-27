@@ -12,7 +12,7 @@ import java.util.Optional;
 @RequestMapping(value ="api/matricula", produces ="application/json")
 public class FacturaController {
 
-    private final FacturaRepository facturaData;
+    private final MatriculaRepository facturaData;
     private final DetalleFacturaRepository detalleFacturaData;
 
     public FacturaController(FacturaRepository facturaData,
@@ -30,6 +30,13 @@ public class FacturaController {
         listItems.stream().forEach(o -> o.setFactura(generada));
         detalleFacturaData.saveAllAndFlush(listItems);
         return new ResponseEntity<Integer>(p.getId(),HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> create(@RequestBody Alumno p){
+        alumnoData.save(p);
+        alumnoData.flush();
+        return new ResponseEntity<Integer>(p.getCodigoAlumno(),HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{numeroFactura}", produces = MediaType.APPLICATION_JSON_VALUE)
